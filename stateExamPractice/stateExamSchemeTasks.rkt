@@ -41,9 +41,9 @@
   (if (> x y) '() (cons x (numRange (+ x 1) y))))
 
 (define (chainMinCompositions p)
-  (let ((f0 (lambda (x) x))
-        (f1 (lambda (x) (p x))))
-  (define minFunc (lambda (mainFunc num) (totalMin (stream->list (stream-take (mainFunc p f1 f0 0) (- num 1))))))
+  (let* ((f0 (lambda (x) x))
+        (f1 (lambda (x) (p x)))
+    (minFunc (lambda (mainFunc num) (totalMin (stream->list (stream-take (mainFunc p f1 f0 0) (- num 1)))))))
   (define (compose p n1 n2 n)
     (cond [(= n 0) (stream-cons n2 (compose p  n1 n2 (+ n 1)))]
           [(= n 1) (stream-cons n1 (compose p  n1 n2 (+ n 1)))]
