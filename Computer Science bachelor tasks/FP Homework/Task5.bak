@@ -1,0 +1,34 @@
+#lang racket
+(require rackunit)
+(require rackunit/text-ui)
+
+(define (add2 x)(+ x 2))
+(define (add4 x)(+ x 4))
+(define (add5 x)(+ x 5))
+
+(define (multiply2 x)(* x 2))
+(define (multiply3 x)(* x 4))
+(define (multiply5 x)(* x 5))
+
+(define (substract2 x)(- x 2))
+(define (substract4 x)(- x 4))
+(define (substract5 x)(- x 5))
+;Тази функция прилага всяка функция от списъка към аргумент позиционно съответстващ от списъка с числа и накрая връща най-малкия
+(define (minElementFromList lstOperations lstNumbers)(define (helper lstOperations lstNumbers minElement)
+         (cond((null? lstNumbers) minElement)
+         ((< ((car lstOperations) (car lstNumbers)) minElement) (helper (cdr lstOperations) (cdr lstNumbers) ((car lstOperations) (car lstNumbers))))
+         (else (helper (cdr lstOperations) (cdr lstNumbers) minElement))))(helper lstOperations lstNumbers ((car lstOperations) (car lstNumbers))))
+;Създава списък от най-малки елементи за всеки ред от матрицата
+(define (list-creator matrixOfOperations lstOfNumbers)(if(null? matrixOfOperations) '()
+                                                         (cons (minElementFromList (car matrixOfOperations) lstOfNumbers) (list-creator (cdr matrixOfOperations) lstOfNumbers))))
+
+(define operationMatrix (list (list add2 add4 add5) (list multiply2 multiply3 multiply5) (list substract2 substract4 substract5)))
+
+(define tests (test-suite
+               "matrix creator"
+               
+(test-case "Random row" (check-equal? (list-creator operationMatrix '(2 4 1)) '(4 8 -4)))
+
+           ))
+
+(run-tests tests 'verbose)

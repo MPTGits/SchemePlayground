@@ -1,0 +1,18 @@
+#lang racket
+(require rackunit)
+(require rackunit/text-ui)
+
+;Искаме да транспонираме дадена матрица
+
+
+(define (matrix-transpose matrix)
+  (apply map list matrix))
+
+(define tests (test-suite
+               "matrix transpose"
+               
+(test-case "Random matrix" (check-equal? (matrix-transpose '((1 2 3) (3 4 5) (6 7 8) (9 10 11))) '((1 3 6 9) (2 4 7 10) (3 5 8 11))))
+(test-case "No matrix" (check-equal? (matrix-transpose '(())) '()))
+           ))
+
+(run-tests tests 'verbose)

@@ -1,0 +1,5 @@
+#lang racket
+(define (square a) (* a a))
+(define (sum start end term) (if (> start end) 0 (+ (term start) (sum (+ 1 start) end term))))
+
+(sum 1 3 square)
