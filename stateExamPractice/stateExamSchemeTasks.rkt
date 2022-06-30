@@ -53,3 +53,87 @@
   
 
 (define test (stream->list (stream-take (chainMinCompositions (lambda (x) (if (< x 3) (* x 3) (* x 0)))) 15)))
+
+;State Exam 2014.09.11
+ 
+(define (permutations items)
+(if (null? items) '(())
+    (apply append (map (lambda (element)
+                         (map (lambda (permutation) (cons element permutation)) (permutations (removeEl element items))))
+                   items))))
+      
+
+(define (removeEl x lst)
+  (cond [(null? lst) '()]
+        [(= (car lst) x) (cdr lst)]
+        [else (cons (car lst) (removeEl x (cdr lst)))]))
+
+
+;State exam 2015.09.10
+
+(define (merge l1 l2)
+  (cond ((null? l1) l2)
+        ((null? l2) l1)
+        ((< (car l1) (car l2)) (cons (car l1) (merge (cdr l1) l2)))
+        (else (cons (car l2) (merge l1 (cdr l2))))))
+
+;((lambda (l) (filter (lambda (y) (even? y)) l)) '(1 2 3 4))
+
+;State Exam 2015.07.14
+
+;(map  
+; (car (list (lambda (couple) (+ (car couple) (cdr couple))))) 
+;   (apply append '( ( (1 . 2) ) ( (3 . 4) ))))
+
+;Answer: '(3 7)
+
+;(map (lambda (x)  
+;             (cons x (list x)))  
+;    '(1 2 3 4 5))
+
+;Answer: '((1 1) (2 2) (3 3) (4 4) (5 5))
+
+;(map (lambda (pred) (filter pred '(1 2 3 4 5)))  
+;     (list even? odd?))
+
+;Answer: '((2 4) (1 3 5))
+
+;State Exam 2016.07.12
+
+;(map (lambda (x) (append (list x) x) ) '( (1 2) (3 4) ) )
+
+;Answer: (((1 2) 1 2) ((3 4) 3 4))
+
+;(map (lambda (f) (map (lambda (x) (f 5 x)) '(1 2 3) ) ) (list + - *))
+
+;Answer: ((6 7 8) (4 3 2) (5 10 15))
+
+;(apply list (list (quote +) (quote 5) 8) )
+
+;Answer: (+ 5 8)
+
+;State Exam 09.09.2016
+
+(define (filterByElement x m)
+  (filter (lambda (lst) (member x lst)) m))
+
+;(filterByElement 2 '((1 2 3) (2 3 4) (3 4 5)))
+
+; (apply + (map (lambda (l) (apply max l) ) '((5 -2) (1 9) (6 -8) )))
+
+;Answer: 20
+
+
+;State Exam 2018.07.13
+
+(define (addDefault val l) 
+  (if (null? l) (list val) l))
+
+
+(define (sumMinFix f1 xl)
+  (apply +
+         (map (lambda (f) (apply  min (addDefault 0 (filter (lambda(x) (= (f x) x)) xl)))) f1)))
+
+;(sumMinFix (list (lambda (x) (/ 1 x)) exp (lambda (x) (- (* 2 x) 3))) '(-2 -1 1 3))
+
+          
