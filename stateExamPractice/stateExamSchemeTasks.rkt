@@ -159,5 +159,27 @@
   (foldr (lambda(product curr) (if (and (> basketCost (findPrice (bestFit product))) (not (member (bestFit product) basket))) (append curr (list (bestFit product))) curr)) '() basket))
 
 
-(recommended '("125" "126") (lambda (x) (number->string (+ (string->number x) 1))) (list (cons "123" 5) (cons "125" 2) (cons "124" 6) (cons "126" 6) (cons "127" 7)))
+;(recommended '("125" "126") (lambda (x) (number->string (+ (string->number x) 1))) (list (cons "123" 5) (cons "125" 2) (cons "124" 6) (cons "126" 6) (cons "127" 7)))
           
+;State Exam 2019.09.10
+
+(define (addIfNew x l)
+  (if (null? x) l
+      (cond ((member (car x) l ) (addIfNew (cdr x) l))
+            (else (cons (car x) (addIfNew (cdr x) l))))))
+
+(define (annotate db annotators)
+  (map (lambda (item-labels-pair) (let ((item (car item-labels-pair)) (labels (cdr item-labels-pair)))
+                                    (cons item (foldr addIfNew labels (map (lambda (annotator) (annotator item)) annotators))))) db))
+
+;(define db (list (cons "scheme" (list (cons "typing" "dynamic") (cons "evaluation" "strict")))
+;(cons "haskell" (list (cons "typing" "static"))) (cons "c++" (list))))
+;(define (evaluation lang)
+;(case lang (("scheme") (list (cons "evaluation" "strict") (cons "macros" "true")))
+;  (("haskell") (list (cons "evaluation" "lazy")))
+;  (("c++") (evaluation "scheme"))))
+
+;(define (purity lang) (if (eqv? lang "haskell") (list (cons "pure" "true")) (list)))
+
+;(annotate db (list evaluation purity))
+
